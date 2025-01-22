@@ -6,3 +6,8 @@
   background: url("./assets/images/herobg.png");
   background-size: cover;
 }
+
+#features-bg {
+  background: url("./assets//images/features-bg.png");
+  background-size: cover;
+}
