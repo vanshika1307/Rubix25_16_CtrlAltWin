@@ -1,5 +1,21 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { HomeLayout } from "./pages/HomeLayout";
+import { Landing } from "./pages/Landing";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <HomeLayout />,
+    children: [
+      {
+        index: true,
+        element: <Landing />,
+      },
+    ],
+  },
+]);
 
 function App() {
   const [count, setCount] = useState(0);
@@ -14,7 +30,7 @@ function App() {
 
   return (
     <>
-      <h1 className="font-bold text-xl">Hi, World</h1>
+      <RouterProvider router={router} />
     </>
   );
 }
