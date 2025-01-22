@@ -71,7 +71,7 @@ const updateScore = async (req, res) => {
   });
   await user.save();
 
-  res.json(user);
+  res.json({ change: delta });
 };
 
 module.exports = {

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { HomeLayout } from "./pages/HomeLayout";
 import { Landing } from "./pages/Landing";
+import { SustainabilityScore } from "./pages/SustainabilityScore";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Landing />,
+      },
+      {
+        path: "/score",
+        element: <SustainabilityScore />,
       },
     ],
   },
