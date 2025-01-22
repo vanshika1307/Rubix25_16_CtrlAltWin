@@ -5,6 +5,8 @@ import { HomeLayout } from "./pages/HomeLayout";
 import { Landing } from "./pages/Landing";
 import { SustainabilityScore } from "./pages/SustainabilityScore";
 import AuthPage from "./pages/AuthPage/AuthPage";
+import CommunityHub from "./pages/CommunityHub";
+import { AuthContextProvider } from "./contexts/authContext";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/auth",
         element: <AuthPage />,
+      },
+      {
+        path: "/community",
+        element: <CommunityHub />,
       }
     ],
   },
@@ -40,7 +46,11 @@ function App() {
     fn();
   }, []);
 
-  return <RouterProvider router={router} />;
+  return (
+    <AuthContextProvider>
+      <RouterProvider router={router} />
+    </AuthContextProvider>
+  );
 }
 
 export default App;

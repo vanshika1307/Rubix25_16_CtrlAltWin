@@ -11,11 +11,12 @@ const authRouter = require("./routes/auth");
 const jobsRouter = require("./routes/jobs");
 const susRouter = require("./routes/sustain-score");
 const scoreRouter = require("./routes/scores");
+const postsRouter = require('./routes/posts');
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
-const { authMiddleware } = require("./middleware/authentication");
+const { authenticateUser } = require("./middleware/authentication");
 
 // extra packages
 const helmet = require("helmet");
@@ -44,8 +45,9 @@ app.get("/", (req, res) => {
   res.json({ msg: "Hello, user!" });
 });
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/jobs", authMiddleware, jobsRouter);
+app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 app.use("/api/v1/scores", scoreRouter);
+app.use("/api/v1/posts", postsRouter);
 app.use(susRouter);
 
 app.use(notFoundMiddleware);
