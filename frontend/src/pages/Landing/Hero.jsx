@@ -1,4 +1,15 @@
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
 export const Hero = () => {
+  useGSAP(() => {
+    gsap.from(".hero-content *", {
+      x: -300,
+      opacity: 0,
+      stagger: 0.2,
+    });
+  });
+
   return (
     <>
       <div id="hero-bg" className="h-screen flex flex-col px-5">

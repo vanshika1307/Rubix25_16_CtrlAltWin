@@ -1,6 +1,8 @@
 import { Link, NavLink } from "react-router-dom";
 import Styled from "styled-components";
 import logo from "../assets/images/logo.png";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const Wrapper = Styled.div`
   .nav-links a {
@@ -17,6 +19,18 @@ const Wrapper = Styled.div`
 `;
 
 export const Navbar = () => {
+  useGSAP(() => {
+    gsap.from(".nav-action button, .nav-links a", {
+      y: -100,
+      stagger: 0.2,
+    });
+
+    gsap.from(".nav-logo", {
+      y: -50,
+      opacity: 0,
+    });
+  });
+
   return (
     <Wrapper className="absolute w-full top-0">
       <nav className="bg-white/30 mt-5 mx-5 px-4 text-white font-bold text-lg rounded-2xl backdrop-blur-sm">
