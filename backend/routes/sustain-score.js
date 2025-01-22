@@ -4,7 +4,7 @@ const axios = require('axios');
 
 router.post('/api/sustain-score', async (req, res) => {
     const { products } = req.body;
-    const API_KEY = 'AIzaSyBXu68Np4CFGjFK50NpsVrjuMdjBInysVQ';
+    const API_KEY = process.env.GEMINI_API_KEY;
     const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
 
     const sanitizedProducts = products.map(product => ({
