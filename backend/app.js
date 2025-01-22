@@ -9,6 +9,7 @@ const connectDB = require("./db/connect");
 // routers
 const authRouter = require("./routes/auth");
 const jobsRouter = require("./routes/jobs");
+const susRouter = require("./routes/sustain-score");
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authMiddleware, jobsRouter);
+app.use(susRouter)
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

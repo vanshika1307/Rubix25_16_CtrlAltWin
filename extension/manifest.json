@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "Sustainability Score for Shopping",
+    "version": "1.0",
+    "description": "Assign sustainability scores to products in your cart and suggest greener alternatives.",
+    "host_permissions": ["https://www.amazon.in/*"],
+    "permissions": [
+      "activeTab",
+      "storage"
+    ],
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://www.amazon.in/*", "https://www.flipkart.com/*"],
+        "js": ["content.js"]
+      }
+    ]
+  }
+  
