@@ -56,31 +56,23 @@ const Scanner = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white py-12 px-4">
-      <div className="max-w-3xl mx-auto">
+    <div id="scanner-bg" className="min-h-screen bg-gradient-to-b from-green-50 to-white py-12 px-4 ">
+      <div className="max-w-3xl mx-auto my-[8rem]">
         <div className="bg-white rounded-2xl shadow-xl p-8 space-y-8">
-          <h1 className="text-3xl font-bold text-center text-gray-800">
-            Product Scanner
-          </h1>
+          <h1 className="text-3xl font-bold text-center text-gray-800">Product Scanner</h1>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Image Upload Box */}
             <div
               {...getRootProps()}
               className={`border-2 border-dashed rounded-xl p-8 transition-all duration-300 ${
-                isDragActive
-                  ? "border-green-500 bg-green-50"
-                  : "border-gray-300 hover:border-green-400"
+                isDragActive ? "border-green-500 bg-green-50" : "border-gray-300 hover:border-green-400"
               } cursor-pointer text-center`}
             >
               <input {...getInputProps()} />
               {preview ? (
                 <div className="relative group">
-                  <img
-                    src={preview}
-                    alt="Preview"
-                    className="max-h-64 mx-auto rounded-lg"
-                  />
+                  <img src={preview} alt="Preview" className="max-h-64 mx-auto rounded-lg" />
                   <div className="absolute inset-0 bg-black bg-opacity-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <p className="text-white">Click or drag to replace</p>
                   </div>
@@ -88,9 +80,7 @@ const Scanner = () => {
               ) : (
                 <div className="space-y-4">
                   <div className="text-5xl text-gray-300">📸</div>
-                  <p className="text-gray-500">
-                    Drag and drop an image here, or click to select
-                  </p>
+                  <p className="text-gray-500">Drag and drop an image here, or click to select</p>
                 </div>
               )}
             </div>
@@ -120,9 +110,7 @@ const Scanner = () => {
           {productDetails && (
             <div className="bg-gray-100 p-4 rounded-lg">
               <h2 className="text-lg font-bold">Product Details</h2>
-              <pre className="text-sm text-gray-800 whitespace-pre-wrap">
-                {productDetails}
-              </pre>
+              <pre className="text-sm text-gray-800 whitespace-pre-wrap">{productDetails}</pre>
             </div>
           )}
         </div>

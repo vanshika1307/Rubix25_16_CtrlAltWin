@@ -27,9 +27,9 @@ const AuthPage = () => {
       {/* Background Elements */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-green-100" />
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('/src/assets/pattern-light.svg')] opacity-10" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-t from-green-200 to-green-300 rounded-full filter blur-3xl opacity-20 transform translate-x-1/3 translate-y-1/3" />
-        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-b from-green-200 to-green-300 rounded-full filter blur-3xl opacity-20 transform -translate-x-1/3 -translate-y-1/3" />
+        <div className="absolute top-0 left-0 bg-[url('/src/assets/pattern-light.svg')] opacity-10" />
+        <div className="absolute bottom-0 right-0 bg-gradient-to-t from-green-200 to-green-300 rounded-full filter blur-3xl opacity-20 transform translate-x-1/3 translate-y-1/3" />
+        <div className="absolute top-0 left-0 bg-gradient-to-b from-green-200 to-green-300 rounded-full filter blur-3xl opacity-20 transform -translate-x-1/3 -translate-y-1/3" />
       </div>
 
       <div className="relative z-10 bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-4xl h-[600px] flex items-center overflow-hidden">

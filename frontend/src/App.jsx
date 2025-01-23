@@ -11,6 +11,7 @@ import LocalStores from "./pages/LocalStores/LocalStores";
 import { Dashboard } from "./pages/Dashboard";
 import Scanner from "./pages/Scanner/scanner";
 import ProductsPage from "./pages/ProductDisplay/Home";
+import SearchPage from "./pages/ProductDisplay/SearchPage";
 
 const router = createBrowserRouter([
   {
@@ -47,8 +48,12 @@ const router = createBrowserRouter([
         element: <ProductsPage />,
       },
       {
-        path: "map",
+        path: "/map",
         element: <LocalStores />,
+      },
+      {
+        path: "/search",
+        element: <SearchPage />,
       },
     ],
   },

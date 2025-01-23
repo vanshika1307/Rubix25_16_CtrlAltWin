@@ -1,23 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  GoogleMap,
-  Marker,
-  InfoWindow,
-  useLoadScript,
-} from "@react-google-maps/api";
-import {
-  MagnifyingGlassIcon,
-  MapPinIcon,
-  StarIcon,
-  BuildingOfficeIcon,
-} from "@heroicons/react/24/outline";
+import { GoogleMap, Marker, InfoWindow, useLoadScript } from "@react-google-maps/api";
+import { MagnifyingGlassIcon, MapPinIcon, StarIcon, BuildingOfficeIcon } from "@heroicons/react/24/outline";
 
 const libraries = ["places"];
 const defaultCenter = {
   lat: 20.5937,
   lng: 78.9629,
 };
-
 
 const SustainableStores = () => {
   const [lat, setLat] = useState(null);
@@ -38,9 +27,7 @@ const SustainableStores = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/map?lat=${lat}&lng=${lng}`
-      );
+      const response = await fetch(`http://localhost:3000/api/map?lat=${lat}&lng=${lng}`);
       if (!response.ok) {
         throw new Error("Failed to fetch locations");
       }
@@ -59,9 +46,9 @@ const SustainableStores = () => {
     setError(null);
     try {
       const geocodeResponse = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-          searchQuery
-        )}&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(searchQuery)}&key=${
+          import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+        }`
       );
       const geocodeData = await geocodeResponse.json();
       if (geocodeData.results.length > 0) {
@@ -105,9 +92,7 @@ const SustainableStores = () => {
   if (loadError)
     return (
       <div className="min-h-screen flex items-center justify-center bg-red-50">
-        <div className="text-red-600 text-center text-xl">
-          Error loading maps: {loadError.message}
-        </div>
+        <div className="text-red-600 text-center text-xl">Error loading maps: {loadError.message}</div>
       </div>
     );
 
@@ -119,12 +104,10 @@ const SustainableStores = () => {
     );
 
   return (
-        <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-green-50">
-      <div className="bg-gradient-to-r from-green-600 to-green-500 shadow-md p-8">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-green-50">
+      <div className="bg-green-500 shadow-md p-8">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl font-bold text-white mb-8 tracking-wide">
-            Sustainable Stores
-          </h1>
+          <h1 className="text-4xl font-bold mb-8 tracking-wide text-green-500">Sustainable Stores</h1>
           <div className="flex flex-col sm:flex-row gap-4 max-w-3xl mx-auto">
             <div className="relative flex-1">
               <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -133,7 +116,7 @@ const SustainableStores = () => {
                 placeholder="Enter a location"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                 className="w-full pl-10 pr-4 py-3 rounded-lg border-2 border-green-400 focus:ring-2 focus:ring-green-300 focus:border-transparent transition-all"
               />
             </div>
@@ -166,9 +149,7 @@ const SustainableStores = () => {
           )}
 
           {error && (
-            <div className="absolute top-4 left-4 right-4 bg-red-100 text-red-600 px-4 py-3 rounded-lg">
-              {error}
-            </div>
+            <div className="absolute top-4 left-4 right-4 bg-red-100 text-red-600 px-4 py-3 rounded-lg">{error}</div>
           )}
 
           <GoogleMap
@@ -190,26 +171,26 @@ const SustainableStores = () => {
                 onClick={() => setSelectedLocation(loc)}
               />
             ))}
-
-           
           </GoogleMap>
         </div>
 
         {selectedLocation && (
           <div className="w-96 bg-white shadow-lg p-6 overflow-y-auto">
-            <h2 className="text-2xl font-bold text-gray-800">
-              {selectedLocation.name}
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-800">{selectedLocation.name}</h2>
             {selectedLocation.image && (
-            <img
-              src={selectedLocation.image}
-              alt={selectedLocation.name}
-              style={{ width: "200px", height: "200px", objectFit: "cover" }}
-            />
-          )}
-          <p><strong>Address:</strong> {selectedLocation.address}</p>
+              <img
+                src={selectedLocation.image}
+                alt={selectedLocation.name}
+                style={{ width: "200px", height: "200px", objectFit: "cover" }}
+              />
+            )}
+            <p>
+              <strong>Address:</strong> {selectedLocation.address}
+            </p>
 
-          <p><strong>Rating:</strong> {selectedLocation.rating}</p>
+            <p>
+              <strong>Rating:</strong> {selectedLocation.rating}
+            </p>
 
             <button
               onClick={() =>

@@ -58,6 +58,11 @@
   background-size: cover;
 }
 
+#scanner-bg {
+  background: url("./assets/images/scanner-bg.webp");
+  background-size: cover;
+}
+
 /* Loader */
 .loading {
   width: 6rem;
