@@ -1,5 +1,5 @@
 const express = require("express");
-const { getScore, updateScore } = require("../controllers/scores");
+const { getScore, updateScore } = require("../controllers/user");
 const { authenticateUser } = require("../middleware/authentication");
 const router = express.Router();
 

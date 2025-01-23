@@ -10,8 +10,8 @@ const connectDB = require("./db/connect");
 const authRouter = require("./routes/auth");
 const jobsRouter = require("./routes/jobs");
 const susRouter = require("./routes/sustain-score");
-const scoreRouter = require("./routes/scores");
-const postsRouter = require('./routes/posts');
+const userRouter = require("./routes/user");
+const postsRouter = require("./routes/posts");
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
@@ -34,10 +34,7 @@ const cors = require("cors");
 // );
 app.use(express.json());
 app.use(helmet());
-app.use(cors({
-  origin: 'http://localhost:5173', // Your frontend URL
-  credentials: true,
-}));
+app.use(cors());
 app.use(xss());
 
 // routes
@@ -46,7 +43,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobsRouter);
-app.use("/api/v1/scores", scoreRouter);
+app.use("/api/v1/user", userRouter);
 app.use("/api/v1/posts", postsRouter);
 app.use(susRouter);
 

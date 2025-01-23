@@ -6,12 +6,12 @@ const getScore = async (req, res) => {
   const { userId } = req.user;
   const cart = req.body?.products || [];
 
-  const user = await User.findOne({ _id: userId });
+  const user = await User.findOne({ _id: userId }).select("-password");
   if (!user) {
     throw new NotFoundError("User not found");
   }
 
-  res.status(200).json({ scores: user.scores });
+  res.status(200).json({ user });
 };
 
 const calcScoreFromCart = async (cart, oldScore) => {

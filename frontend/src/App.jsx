@@ -7,6 +7,7 @@ import { SustainabilityScore } from "./pages/SustainabilityScore";
 import AuthPage from "./pages/AuthPage/AuthPage";
 import CommunityHub from "./pages/CommunityHub";
 import { AuthContextProvider } from "./contexts/authContext";
+import { Dashboard } from "./Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,11 @@ const router = createBrowserRouter([
       {
         path: "/community",
         element: <CommunityHub />,
-      }
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
     ],
   },
 ]);

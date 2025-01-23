@@ -11,3 +11,8 @@
   background: url("./assets//images/features-bg.png");
   background-size: cover;
 }
+
+#dashboard-bg {
+  background: url("./assets//images/dashboard-bg.jpg");
+  background-size: cover;
+}
