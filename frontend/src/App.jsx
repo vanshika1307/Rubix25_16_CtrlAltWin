@@ -9,7 +9,9 @@ import CommunityHub from "./pages/CommunityHub";
 import { AuthContextProvider } from "./contexts/authContext";
 import LocalStores from "./pages/LocalStores/LocalStores";
 import { Dashboard } from "./pages/Dashboard";
-import { Scanner } from "./pages/Scanner";
+import  Scanner  from "./pages/Scanner/scanner";
+
+
 
 const router = createBrowserRouter([
   {
@@ -40,6 +42,8 @@ const router = createBrowserRouter([
         path: "/scanner",
         element: <Scanner />,
       },
+      
+    
     ],
   },
   {
