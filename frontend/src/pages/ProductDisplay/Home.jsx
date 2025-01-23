@@ -1,28 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ProductCardComponent from './ProductCardComponent';
+import React, { useState, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import ProductCardComponent from "./ProductCardComponent";
+import { useAuthContext } from "../../contexts/authContext";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+
+  const { token } = useAuthContext();
+  if (!token) {
+    return <Navigate to={"/auth"} />;
+  }
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const res = await fetch('http://localhost:3000/api/products');
-        if (!res.ok) throw new Error('Failed to fetch');
+        const res = await fetch("http://localhost:3000/api/products");
+        if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
 
         // Sort products based on image quality
         const sortedProducts = data
-          .filter(product => product.image)
+          .filter((product) => product.image)
           .sort((a, b) => {
-            const isAValidImage = a.image && !a.image.includes('placehold.co');
-            const isBValidImage = b.image && !b.image.includes('placehold.co');
-            
+            const isAValidImage = a.image && !a.image.includes("placehold.co");
+            const isBValidImage = b.image && !b.image.includes("placehold.co");
+
             if (isAValidImage && !isBValidImage) return -1;
             if (!isAValidImage && isBValidImage) return 1;
             return 0;
@@ -59,12 +65,8 @@ const Home = () => {
       <div className="bg-gradient-to-r from-green-600 to-green-500 text-white py-20 px-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/pattern.png')] opacity-10"></div>
         <div className="max-w-7xl mx-auto text-center relative z-10">
-          <h1 className="text-5xl font-bold mb-6 tracking-tight">
-            Discover Eco-Friendly Products
-          </h1>
-          <p className="text-xl mb-8 text-green-100">
-            Shop sustainably. Live responsibly.
-          </p>
+          <h1 className="text-5xl font-bold mb-6 tracking-tight">Discover Eco-Friendly Products</h1>
+          <p className="text-xl mb-8 text-green-100">Shop sustainably. Live responsibly.</p>
           <form onSubmit={handleSearch} className="max-w-xl mx-auto">
             <div className="relative">
               <input
@@ -86,19 +88,14 @@ const Home = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-          Featured Products
-        </h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Featured Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {products.map((product, index) => (
-            <div 
+            <div
               key={`${product.id || product.name}-${index}`}
               className="transform transition-all duration-300 hover:scale-105"
             >
-              <ProductCardComponent 
-                product={product} 
-                isPriority={!product.image?.includes('placehold.co')}
-              />
+              <ProductCardComponent product={product} isPriority={!product.image?.includes("placehold.co")} />
             </div>
           ))}
         </div>

@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useState, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
+import { useAuthContext } from "../contexts/authContext";
 
 const Wrapper = Styled.div`
   .nav-links a {
@@ -24,23 +25,15 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
+  const { token, setToken, name } = useAuthContext();
+
   useEffect(() => {
-    // Check for user data in localStorage
     const userData = localStorage.getItem("user");
     if (userData) {
       setUser(JSON.parse(userData));
+      console.log({ userData });
     }
   }, []);
-
-  const handleLogout = () => {
-    // Clear user data from localStorage
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setUser(null);
-    // Refresh the page
-    window.location.reload();
-    navigate("/");
-  };
 
   useGSAP(() => {
     gsap.from(".nav-action button, .nav-links a", {
@@ -54,25 +47,36 @@ export const Navbar = () => {
     });
   });
 
+  const handleLogout = () => {
+    // Clear user data from localStorage
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setToken(null);
+    setUser(null);
+    navigate("/");
+  };
+
   return (
     <Wrapper className="absolute w-full top-0">
       <nav className="bg-white/30 fixed w-full py-1 px-4 z-10 font-bold text-lg backdrop-blur-sm">
         <div className="nav-center mx-auto max-w-[1190px]">
           <div className="nav-links flex gap-3 items-center">
             <NavLink to={`/`}>Home</NavLink>
-            <NavLink to={`/score`}>Scores</NavLink>
-            <NavLink to={`/`}>Contacts</NavLink>
+            <NavLink to={`/score`}>Score</NavLink>
+            <NavLink to={`/products`}>Products</NavLink>
+            <NavLink to={`/community`}>Community</NavLink>
           </div>
           <div className="nav-logo flex justify-center items-center text-4xl text-green-900">
             <img src={logo} alt="" className="" />
             <span className="pl-1 font-title">Essence</span>
           </div>
           <div className="nav-action flex justify-end gap-3 my-auto">
-            {user ? (
+            {token ? (
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2">
-                  <FaUserCircle className="text-2xl" />
-                  <span className="text-green-900">{user.name}</span>
+                <div className="flex items-center gap-2 cursor-pointer">
+                  <Link to={"/dashboard"}>
+                    <span className="text-green-900 capitalize">{name}</span>
+                  </Link>
                 </div>
                 <button
                   onClick={handleLogout}
