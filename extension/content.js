@@ -54,3 +54,49 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 });
+
+
+if (window.location.href.includes('/gp/cart/')) {
+  // Create a custom notification or alert
+  const showNotification = () => {
+    const notification = document.createElement('div');
+    notification.style.position = 'fixed';
+    notification.style.bottom = '20px';
+    notification.style.right = '20px';
+    notification.style.backgroundColor = '#98FB98';
+    notification.style.color = '#000';
+    notification.style.padding = '5px';
+    notification.style.borderRadius = '8px';
+    notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+    notification.style.fontFamily = 'Arial, sans-serif';
+    notification.style.fontSize = '20px';
+    notification.style.zIndex = '1000';
+    
+    // Get the URL of the image dynamically
+    const logoUrl = chrome.runtime.getURL("images/logo.png");
+
+    notification.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+        <img src="${logoUrl}" alt="Logo" width="50" height="60">
+        <h2 style="margin: 0; font-size: 18px;">ESSENCE</h2>
+      </div>
+      <div>
+        <strong> Make sure to check the sustainability score 
+        and opt for better products on our site! 
+        <a href="http://localhost:5173/" target="_blank" style="color: #2563eb; text-decoration: underline;">Visit here</a>.
+        </strong>
+      </div>
+    `;
+
+    // Append the notification to the document
+    document.body.appendChild(notification);
+
+    // Auto-hide the notification after 10 seconds
+    setTimeout(() => {
+      notification.remove();
+    }, 10000);
+  };
+
+  // Show the notification
+  showNotification();
+}
