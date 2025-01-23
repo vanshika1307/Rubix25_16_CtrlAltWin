@@ -10,6 +10,7 @@ import { AuthContextProvider } from "./contexts/authContext";
 import LocalStores from "./pages/LocalStores/LocalStores";
 import { Dashboard } from "./pages/Dashboard";
 import { Scanner } from "./pages/Scanner";
+import ProductsPage from "./pages/ProductDisplay/Home";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/scanner",
         element: <Scanner />,
+      },
+      {
+        path: "/products",
+        element: <ProductsPage />,
       },
     ],
   },
