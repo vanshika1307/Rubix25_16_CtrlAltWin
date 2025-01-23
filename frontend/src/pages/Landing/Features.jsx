@@ -88,7 +88,7 @@ export const Features = () => {
         {data.map(({ name, description, icon, url }, idx) => {
           return (
             <div
-              className="bg-white px-5 py-10 flex flex-col gap-3 justify-center items-center shadow-lg"
+              className="bg-white px-5 py-10 flex flex-col gap-3 justify-center items-center shadow-lg rounded-2xl"
               key={idx}
               id={`card-${idx + 1}`}
             >

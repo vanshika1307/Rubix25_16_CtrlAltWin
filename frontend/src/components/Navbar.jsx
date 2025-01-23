@@ -56,7 +56,7 @@ export const Navbar = () => {
 
   return (
     <Wrapper className="absolute w-full top-0">
-      <nav className="bg-white/30 mt-5 mx-5 px-4 text-white font-bold text-lg rounded-2xl backdrop-blur-sm">
+      <nav className="bg-white/30 fixed w-full py-4 px-4 z-10 font-bold text-lg rounded-2xl backdrop-blur-sm">
         <div className="nav-center mx-auto max-w-[1190px]">
           <div className="nav-links flex gap-3 items-center">
             <NavLink to={`/`}>Home</NavLink>
@@ -64,8 +64,8 @@ export const Navbar = () => {
             <NavLink to={`/`}>Contacts</NavLink>
           </div>
           <div className="nav-logo flex justify-center items-center text-4xl text-green-900">
-            <img src={logo} alt="" className="" />
-            <span className="pl-1 font-serif">Essence</span>
+            <img src={logo} alt="" className=" w-10" />
+            <span className="pl-1 font-extrabold">Essence</span>
           </div>
           <div className="nav-action flex justify-end gap-3 my-auto">
             {user ? (
