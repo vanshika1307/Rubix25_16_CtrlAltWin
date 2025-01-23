@@ -93,8 +93,8 @@ export const Features = () => {
     },
   ];
   return (
-    <div id="features-bg" className="h-screen flex flex-col justify-center overflow-x-hidden">
-      <h2 className="features-heading font-bold text-5xl text-center mb-12 font-title" ref={ref}>
+    <div id="features-bg" className="h-screen flex flex-col items-center justify-center overflow-x-hidden">
+      <h2 className="bg-white/30 backdrop:blur-sm p-4 space-x-1 rounded-2xl w-fit features-heading font-semibold text-5xl text-center mb-12 font-title" ref={ref}>
         First steps at protecting mother nature...
       </h2>
       <div className="feature-cards flex gap-8 px-6">
