@@ -1,14 +1,14 @@
-import React, { useState, useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
+import React, { useState, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 
 const Scanner = () => {
   const [productImage, setProductImage] = useState(null);
-  const [productName, setProductName] = useState('');
+  const [productDetails, setProductDetails] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [preview, setPreview] = useState('');
+  const [preview, setPreview] = useState("");
 
   // Handle file drop
-  const onDrop = useCallback(acceptedFiles => {
+  const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
     setProductImage(file);
     setPreview(URL.createObjectURL(file));
@@ -16,32 +16,42 @@ const Scanner = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: {
-      'image/*': ['.jpeg', '.jpg', '.png']
-    },
-    multiple: false
+    accept: { "image/*": [".jpeg", ".jpg", ".png"] },
+    multiple: false,
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!productImage) {
+      alert("Please upload an image.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      // Create form data
       const formData = new FormData();
-      formData.append('image', productImage);
-      formData.append('name', productName);
+      formData.append("image", productImage);
 
-      // TODO: Add Gemini API integration here
-      
-      // Reset form
-      setProductImage(null);
-      setProductName('');
-      setPreview('');
+      const response = await fetch("http://localhost:3000/api/scanner", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to process the barcode");
+      }
+
+      const data = await response.json();
+      setProductDetails(data.details);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
+      alert("An error occurred while processing the barcode.");
     } finally {
       setLoading(false);
+      setPreview("");
+      setProductImage(null);
     }
   };
 
@@ -57,15 +67,11 @@ const Scanner = () => {
             {/* Image Upload Box */}
             <div
               {...getRootProps()}
-              className={`
-                border-2 border-dashed rounded-xl p-8
-                transition-all duration-300 ease-in-out
-                ${isDragActive 
-                  ? 'border-green-500 bg-green-50' 
-                  : 'border-gray-300 hover:border-green-400'}
-                cursor-pointer
-                text-center
-              `}
+              className={`border-2 border-dashed rounded-xl p-8 transition-all duration-300 ${
+                isDragActive
+                  ? "border-green-500 bg-green-50"
+                  : "border-gray-300 hover:border-green-400"
+              } cursor-pointer text-center`}
             >
               <input {...getInputProps()} />
               {preview ? (
@@ -89,32 +95,15 @@ const Scanner = () => {
               )}
             </div>
 
-            {/* Product Name Input */}
-            <div className="space-y-2">
-              <label htmlFor="productName" className="block text-sm font-medium text-gray-700">
-                Product Name (optional)
-              </label>
-              <input
-                type="text"
-                id="productName"
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
-                placeholder="Enter product name"
-              />
-            </div>
-
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={!productImage && !productName.trim()}
-              className={`
-                w-full py-3 rounded-lg text-white font-medium
-                transition-all duration-300
-                ${(!productImage && !productName.trim())
-                  ? 'bg-gray-300 cursor-not-allowed'
-                  : 'bg-green-600 hover:bg-green-500 hover:shadow-lg active:transform active:scale-95'}
-              `}
+              disabled={!productImage}
+              className={`w-full py-3 rounded-lg text-white font-medium transition-all duration-300 ${
+                !productImage
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-500 hover:shadow-lg active:transform active:scale-95"
+              }`}
             >
               {loading ? (
                 <div className="flex items-center justify-center gap-2">
@@ -122,10 +111,20 @@ const Scanner = () => {
                   <span>Processing...</span>
                 </div>
               ) : (
-                'Scan Product'
+                "Scan Product"
               )}
             </button>
           </form>
+
+          {/* Display Product Details */}
+          {productDetails && (
+            <div className="bg-gray-100 p-4 rounded-lg">
+              <h2 className="text-lg font-bold">Product Details</h2>
+              <pre className="text-sm text-gray-800 whitespace-pre-wrap">
+                {productDetails}
+              </pre>
+            </div>
+          )}
         </div>
       </div>
     </div>
