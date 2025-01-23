@@ -56,7 +56,7 @@ export const Navbar = () => {
 
   return (
     <Wrapper className="absolute w-full top-0">
-      <nav className="bg-white/30 fixed w-full py-4 px-4 z-10 font-bold text-lg rounded-2xl backdrop-blur-sm">
+      <nav className="bg-white/30 fixed w-full py-1 px-4 z-10 font-bold text-lg backdrop-blur-sm">
         <div className="nav-center mx-auto max-w-[1190px]">
           <div className="nav-links flex gap-3 items-center">
             <NavLink to={`/`}>Home</NavLink>
