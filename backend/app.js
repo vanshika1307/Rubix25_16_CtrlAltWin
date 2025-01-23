@@ -10,9 +10,9 @@ const connectDB = require("./db/connect");
 const authRouter = require("./routes/auth");
 const jobsRouter = require("./routes/jobs");
 const susRouter = require("./routes/sustain-score");
-const scoreRouter = require("./routes/scores");
-const postsRouter = require('./routes/posts');
-const mapRouter = require("./routes/map")
+const userRouter = require("./routes/user");
+const postsRouter = require("./routes/posts");
+const mapRouter = require("./routes/map");
 const productRoutes = require("./routes/product")
 
 // error handler
@@ -45,11 +45,11 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobsRouter);
-app.use("/api/v1/scores", scoreRouter);
+app.use("/api/v1/user", userRouter);
 app.use("/api/v1/posts", postsRouter);
 app.use("/api/products", productRoutes);
 app.use(susRouter);
-app.use(mapRouter)
+app.use(mapRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

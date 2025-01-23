@@ -49,3 +49,7 @@
   border-top-color: #16a34a;
 }
 
+#dashboard-bg {
+  background: url("./assets//images/dashboard-bg.jpg");
+  background-size: cover;
+}
