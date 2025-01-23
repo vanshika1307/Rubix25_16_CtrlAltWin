@@ -9,7 +9,7 @@ import CommunityHub from "./pages/CommunityHub";
 import { AuthContextProvider } from "./contexts/authContext";
 import LocalStores from "./pages/LocalStores/LocalStores";
 import { Dashboard } from "./pages/Dashboard";
-import  Scanner  from "./pages/Scanner/scanner";
+import Scanner from "./pages/Scanner/scanner";
 import ProductsPage from "./pages/ProductDisplay/Home";
 
 const router = createBrowserRouter([
@@ -41,17 +41,16 @@ const router = createBrowserRouter([
         path: "/scanner",
         element: <Scanner />,
       },
-      
-    
+
       {
         path: "/products",
         element: <ProductsPage />,
       },
+      {
+        path: "map",
+        element: <LocalStores />,
+      },
     ],
-  },
-  {
-    path: "map",
-    element: <LocalStores />,
   },
 ]);
 

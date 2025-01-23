@@ -3,111 +3,176 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { IoCloseOutline } from "react-icons/io5";
 import { BiLike, BiMessageRoundedDetail, BiTrash, BiEdit } from "react-icons/bi";
 import gsap from "gsap";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useAuthContext } from "../../contexts/authContext";
-import axios from "axios";
-import { backendURL } from "../../../URL";
-
-// Dummy data for initial posts
-const dummyPosts = [
-  {
-    _id: "1",
-    userName: "Sarah Green",
-    message:
-      "Just installed solar panels on my roof! It's amazing how much energy we can save. Has anyone else tried solar solutions?",
-    likes: Array(15).fill({ _id: "dummy" }),
-    comments: [
-      {
-        user: { name: "Mike Johnson" },
-        comment: "That's fantastic! I installed mine last year and my energy bills dropped significantly.",
-      },
-      {
-        user: { name: "Emma Wilson" },
-        comment: "I'm considering this too. Would love to hear more about your experience!",
-      },
-    ],
-    createdAt: new Date("2024-03-15").toISOString(),
-  },
-  {
-    _id: "2",
-    userName: "David Earth",
-    message:
-      "Started my home composting project today! 🌱 Here's a tip: Mix green materials (like food scraps) with brown materials (like dried leaves) for the best results.",
-    likes: Array(23).fill({ _id: "dummy" }),
-    comments: [
-      {
-        user: { name: "Lisa Chen" },
-        comment: "Great tip! I've been composting for months and it's made my garden so much healthier.",
-      },
-    ],
-    createdAt: new Date("2024-03-14").toISOString(),
-  },
-  {
-    _id: "3",
-    userName: "Alex Rivers",
-    message:
-      "Just switched to a bamboo toothbrush and reusable cotton pads. Small changes add up! What small eco-friendly swaps have you made recently?",
-    likes: Array(42).fill({ _id: "dummy" }),
-    comments: [
-      { user: { name: "Tom Baker" }, comment: "I switched to shampoo bars - no more plastic bottles!" },
-      {
-        user: { name: "Maria Garcia" },
-        comment: "Reusable water bottle and coffee cup - haven't used disposables in months!",
-      },
-      { user: { name: "Chris Park" }, comment: "Beeswax wraps instead of plastic wrap - works great!" },
-    ],
-    createdAt: new Date("2024-03-13").toISOString(),
-  },
-  {
-    _id: "4",
-    userName: "Maya Waters",
-    message:
-      "🌿 Weekly Challenge: Try going meat-free for just one day this week! Share your favorite vegetarian recipes below.",
-    likes: Array(31).fill({ _id: "dummy" }),
-    comments: [
-      { user: { name: "James Cook" }, comment: "Lentil curry is my go-to meat-free meal!" },
-      { user: { name: "Sophie Lee" }, comment: "Mushroom risotto - even my meat-loving family enjoys it!" },
-    ],
-    createdAt: new Date("2024-03-12").toISOString(),
-  },
-];
+import { useNavigate } from "react-router-dom";
 
 const CommunityHub = () => {
-  const [posts, setPosts] = useState([]); // Initialize with dummy posts
+  const [posts, setPosts] = useState([]);
   const [showPostForm, setShowPostForm] = useState(false);
   const [newPost, setNewPost] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // Changed to false since we have dummy data
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [editingPost, setEditingPost] = useState(null);
   const [editingComment, setEditingComment] = useState(null);
-  // const currentUserId = localStorage.getItem("userId"); // Make sure to store userId during login
-  const { token } = useAuthContext();
-
-  const [currentUserId, setCurrentUserId] = useState(null);
-
-  useEffect(() => {
-    const getUser = async () => {
-      const { data: user } = await axios.get(`${backendURL}/user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(user);
-      setCurrentUserId(user._id);
-    };
-    getUser();
-  }, []);
-
-  if (!token) {
-    return <Navigate to={"/auth"} />;
-  }
+  const currentUserId = localStorage.getItem("userId");
 
   // Refs for animations
   const postsContainerRef = useRef(null);
   const fabButtonRef = useRef(null);
   const modalRef = useRef(null);
   const titleRef = useRef(null);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      const ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          defaults: { duration: 0.7, ease: "back.out(1.7)" },
+        });
+
+        // Enhanced background panel animations with rotation and scale
+        gsap.fromTo(
+          ".bg-green-200",
+          { x: "-100%", rotation: -30, opacity: 0, scale: 0.8 },
+          {
+            x: "0%",
+            rotation: 0,
+            opacity: 0.5,
+            scale: 1,
+            duration: 1.2,
+            ease: "elastic.out(1, 0.3)",
+          }
+        );
+
+        gsap.fromTo(
+          ".bg-blue-200",
+          { x: "100%", rotation: 30, opacity: 0, scale: 0.8 },
+          {
+            x: "0%",
+            rotation: 0,
+            opacity: 0.5,
+            scale: 1,
+            duration: 1.2,
+            ease: "elastic.out(1, 0.3)",
+          }
+        );
+
+        // Enhanced title animation with 3D effect
+        tl.fromTo(
+          titleRef.current,
+          {
+            opacity: 0,
+            y: -100,
+            scale: 0.5,
+            rotationX: -90,
+            transformPerspective: 1000,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            rotationX: 0,
+            duration: 1.2,
+            ease: "elastic.out(1, 0.3)",
+          }
+        );
+
+        // Floating animation for title background
+        gsap.to(".blur-lg", {
+          y: 10,
+          duration: 2,
+          repeat: -1,
+          yoyo: true,
+          ease: "power1.inOut",
+        });
+
+        // Enhanced staggered post animations with 3D flip
+        tl.to(
+          ".post-card",
+          {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            scale: 1,
+            stagger: 0.15,
+            duration: 0.8,
+            ease: "power4.out",
+            transformOrigin: "50% 0%",
+            clearProps: "all",
+            onStart: (el) => {
+              gsap.set(el, {
+                opacity: 0,
+                rotationX: -90,
+                y: 50,
+                scale: 0.8,
+              });
+            },
+          },
+          "-=0.5"
+        );
+
+        // Enhanced FAB button with bounce
+        tl.fromTo(
+          fabButtonRef.current,
+          {
+            opacity: 0,
+            scale: 0,
+            rotation: -180,
+            y: 50,
+          },
+          {
+            opacity: 1,
+            scale: 1,
+            rotation: 0,
+            y: 0,
+            duration: 0.8,
+            ease: "elastic.out(1, 0.3)",
+          }
+        );
+
+        // Continuous floating animation for FAB
+        gsap.to(fabButtonRef.current, {
+          y: "-10px",
+          duration: 1.5,
+          repeat: -1,
+          yoyo: true,
+          ease: "power1.inOut",
+        });
+      });
+
+      return () => ctx.revert();
+    });
+  }, []);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      const ctx = gsap.context(() => {
+        const posts = document.querySelectorAll(".post-card");
+
+        posts.forEach((post, index) => {
+          const direction = index % 2 === 0 ? -100 : 100;
+
+          gsap.fromTo(
+            post,
+            {
+              x: direction,
+              opacity: 0,
+              scale: 0.9,
+            },
+            {
+              x: 0,
+              opacity: 1,
+              scale: 1,
+              duration: 0.7,
+              ease: "power2.out",
+              delay: index * 0.2,
+            }
+          );
+        });
+      });
+
+      return () => ctx.revert();
+    });
+  }, []);
 
   useEffect(() => {
     // Wait for next frame to ensure DOM elements are ready
@@ -164,40 +229,107 @@ const CommunityHub = () => {
   useEffect(() => {
     if (showPostForm && modalRef.current) {
       const ctx = gsap.context(() => {
-        gsap.set(modalRef.current, { opacity: 0, y: 50 });
-        gsap.to(modalRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.3,
-          ease: "power2.out",
-        });
+        // Backdrop animation
+        gsap.fromTo(".bg-black", { opacity: 0 }, { opacity: 0.5, duration: 0.3, ease: "power2.out" });
+
+        // Modal animation
+        gsap.fromTo(
+          modalRef.current,
+          {
+            opacity: 0,
+            y: 50,
+            scale: 0.8,
+            rotationX: -20,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            rotationX: 0,
+            duration: 0.5,
+            ease: "power3.out",
+            transformOrigin: "50% 50%",
+          }
+        );
       });
 
       return () => ctx.revert();
     }
   }, [showPostForm]);
 
-  // Like animation function
+  // New scroll-triggered animations for posts
+  useEffect(() => {
+    const posts = document.querySelectorAll(".post-card");
+
+    posts.forEach((post) => {
+      gsap.from(post, {
+        scrollTrigger: {
+          trigger: post,
+          start: "top bottom-=100",
+          toggleActions: "play none none reverse",
+        },
+        opacity: 0,
+        y: 50,
+        rotationX: -15,
+        scale: 0.9,
+        duration: 0.6,
+        ease: "power2.out",
+        clearProps: "all",
+      });
+    });
+  }, [posts]);
+
+  // Enhanced like animation function
   const animateLike = (element) => {
-    gsap.to(element, {
+    const tl = gsap.timeline();
+    tl.to(element, {
       scale: 1.5,
+      rotation: 15,
       duration: 0.15,
       ease: "power2.out",
-      yoyo: true,
-      repeat: 1,
-    });
+    })
+      .to(element, {
+        scale: 1,
+        rotation: 0,
+        duration: 0.15,
+        ease: "elastic.out(1, 0.3)",
+      })
+      .to(element, {
+        y: -20,
+        opacity: 0,
+        scale: 1.2,
+        duration: 0.3,
+        ease: "power2.in",
+      })
+      .set(element, {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+      });
   };
 
   const fetchPosts = async () => {
+    setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/api/v1/posts");
-      const data = await response.json();
-      if (data.posts && data.posts.length > 0) {
-        setPosts(data.posts); // Only update if we get real posts
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
       }
+
+      const response = await fetch("http://localhost:3000/api/v1/posts", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch posts");
+
+      const data = await response.json();
+      setPosts(data.posts || []);
     } catch (err) {
-      console.log("Using dummy posts for now");
-      // Don't set error - we're showing dummy posts
+      console.error("Error fetching posts:", err);
+      setError("Failed to fetch posts");
     } finally {
       setIsLoading(false);
     }
@@ -416,9 +548,11 @@ const CommunityHub = () => {
         </h1>
         {/* Posts List */}
         <div ref={postsContainerRef} className="space-y-4">
-          {posts.map((post) => {
-            const isOwnPost = post.user._id === currentUserId;
-            const hasLikedPost = post.likes.some((like) => like.userId === currentUserId); // Check if the current user has liked the post
+          {posts?.map((post) => {
+            if (!post?._id) return null; // Skip invalid posts
+
+            const isOwnPost = post.user?._id === currentUserId;
+            const hasLikedPost = post.likes?.some((like) => like.userId === currentUserId);
 
             return (
               <div
@@ -432,13 +566,15 @@ const CommunityHub = () => {
                       className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold
                                     ${isOwnPost ? "bg-green-600" : "bg-green-500"}`}
                     >
-                      {post.user?.name?.[0]?.toUpperCase()}
+                      {post.user?.name?.[0]?.toUpperCase() || "?"}
                     </div>
                     <div className="ml-3">
                       <h3 className={`font-semibold ${isOwnPost ? "text-green-800" : ""}`}>
-                        {isOwnPost ? "You" : post.user?.name}
+                        {isOwnPost ? "You" : post.user?.name || "Anonymous"}
                       </h3>
-                      <p className="text-xs text-gray-500">{new Date(post.createdAt).toLocaleString()}</p>
+                      <p className="text-xs text-gray-500">
+                        {post.createdAt ? new Date(post.createdAt).toLocaleString() : "Unknown date"}
+                      </p>
                     </div>
                   </div>
 
@@ -525,10 +661,12 @@ const CommunityHub = () => {
                       </button>
                     </div>
 
-                    {/* Comments section */}
+                    {/* Comments section with null checks */}
                     <div className="space-y-2 mt-4">
                       {post.comments?.map((comment) => {
-                        const isOwnComment = comment.user._id === currentUserId;
+                        if (!comment?._id) return null; // Skip invalid comments
+
+                        const isOwnComment = comment.user?._id === currentUserId;
 
                         return (
                           <div
@@ -563,7 +701,9 @@ const CommunityHub = () => {
                             ) : (
                               <div className="flex justify-between items-start">
                                 <p className="text-sm text-gray-800">
-                                  <span className="font-semibold">{isOwnComment ? "You" : comment.user.name}: </span>
+                                  <span className="font-semibold">
+                                    {isOwnComment ? "You" : comment.user?.name || "Anonymous"}:
+                                  </span>
                                   {comment.content}
                                 </p>
                                 {isOwnComment && (

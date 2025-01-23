@@ -75,14 +75,14 @@ export const Features = () => {
       description:
         "Get the lowdown on every product—its impact, sustainability score, and key facts, so you can make an informed choice with confidence.",
       icon: <LuScanBarcode />,
-      url: "/",
+      url: "/scanner",
     },
     {
       name: "Sustainable Stores Near You",
       description:
         "Find eco-conscious stores in your area! Support sustainable businesses that align with your values and contribute to a greener future.",
       icon: <RiMapPin2Line />,
-      url: "/",
+      url: "/map",
     },
     {
       name: "Eco - Score",
@@ -94,7 +94,10 @@ export const Features = () => {
   ];
   return (
     <div id="features-bg" className="h-screen flex flex-col items-center justify-center overflow-x-hidden">
-      <h2 className="bg-white/30 backdrop:blur-sm p-4 space-x-1 rounded-2xl w-fit features-heading font-semibold text-5xl text-center mb-12 font-title" ref={ref}>
+      <h2
+        className="bg-white/30 backdrop:blur-sm p-4 space-x-1 rounded-2xl w-fit features-heading font-semibold text-5xl text-center mb-12 font-title"
+        ref={ref}
+      >
         First steps at protecting mother nature...
       </h2>
       <div className="feature-cards flex gap-8 px-6">

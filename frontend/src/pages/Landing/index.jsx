@@ -6,21 +6,7 @@ import Preloader from "../../components/Preloader";
 import React, { useState, useEffect } from "react";
 
 export const Landing = () => {
-
-  const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    const fakeDataFetch = () =>{
-        setTimeout(()=>{
-          setLoading(false);
-        },5500)
-    }
-    fakeDataFetch();
-  }, [])
-
-  return isLoading? (
-    <Preloader />
-  )
-  :(
+  return (
     <>
       <main className="">
         <Hero />
