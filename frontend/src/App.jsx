@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { HomeLayout } from "./pages/HomeLayout";
 import { Landing } from "./pages/Landing";
+import LocalStores from "./pages/LocalStores/LocalStores";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "map",
+    element: <LocalStores /> 
+  }
 ]);
 
 function App() {
