@@ -7,8 +7,9 @@ import { SustainabilityScore } from "./pages/SustainabilityScore";
 import AuthPage from "./pages/AuthPage/AuthPage";
 import CommunityHub from "./pages/CommunityHub";
 import { AuthContextProvider } from "./contexts/authContext";
-import { Dashboard } from "./Dashboard";
 import LocalStores from "./pages/LocalStores/LocalStores";
+import { Dashboard } from "./pages/Dashboard";
+import { Scanner } from "./pages/Scanner";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "/scanner",
+        element: <Scanner />,
       },
     ],
   },
