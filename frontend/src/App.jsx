@@ -50,7 +50,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "map",
+    path: "/map",
     element: <LocalStores />,
   },
 ]);
