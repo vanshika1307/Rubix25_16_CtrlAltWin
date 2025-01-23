@@ -14,6 +14,7 @@ const userRouter = require("./routes/user");
 const postsRouter = require("./routes/posts");
 const mapRouter = require("./routes/map");
 const productRoutes = require("./routes/product")
+const scannerRouter = require('./routes/scanner')
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
@@ -57,6 +58,7 @@ app.use("/api/v1/posts", postsRouter);
 app.use("/api/products", productRoutes);
 app.use(susRouter);
 app.use(mapRouter);
+app.use(scannerRouter)
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

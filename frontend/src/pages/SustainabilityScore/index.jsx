@@ -3,11 +3,15 @@ import { useState } from "react";
 import { backendURL } from "../../../URL";
 import { useAuthContext } from "../../contexts/authContext";
 import { toast } from "react-toastify";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const SustainabilityScore = () => {
+  const navigate = useNavigate();
+  const { token } = useAuthContext();
+  if (!token) return <Navigate to={"/auth"} />;
+
   const [products, setProducts] = useState("");
   const [loading, setLoading] = useState(false);
-  const { token } = useAuthContext();
 
   const handleInputChange = (e) => {
     setProducts(e.target.value);

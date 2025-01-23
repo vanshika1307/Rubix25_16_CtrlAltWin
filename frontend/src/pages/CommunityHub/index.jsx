@@ -1,56 +1,75 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { AiOutlinePlus } from 'react-icons/ai';
-import { IoCloseOutline } from 'react-icons/io5';
-import { BiLike, BiMessageRoundedDetail, BiTrash, BiEdit } from 'react-icons/bi';
-import gsap from 'gsap';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from "react";
+import { AiOutlinePlus } from "react-icons/ai";
+import { IoCloseOutline } from "react-icons/io5";
+import { BiLike, BiMessageRoundedDetail, BiTrash, BiEdit } from "react-icons/bi";
+import gsap from "gsap";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../contexts/authContext";
+import axios from "axios";
+import { backendURL } from "../../../URL";
 
 // Dummy data for initial posts
 const dummyPosts = [
   {
-    _id: '1',
-    userName: 'Sarah Green',
-    message: 'Just installed solar panels on my roof! It\'s amazing how much energy we can save. Has anyone else tried solar solutions?',
-    likes: Array(15).fill({ _id: 'dummy' }),
+    _id: "1",
+    userName: "Sarah Green",
+    message:
+      "Just installed solar panels on my roof! It's amazing how much energy we can save. Has anyone else tried solar solutions?",
+    likes: Array(15).fill({ _id: "dummy" }),
     comments: [
-      { user: { name: 'Mike Johnson' }, comment: 'That\'s fantastic! I installed mine last year and my energy bills dropped significantly.' },
-      { user: { name: 'Emma Wilson' }, comment: 'I\'m considering this too. Would love to hear more about your experience!' }
+      {
+        user: { name: "Mike Johnson" },
+        comment: "That's fantastic! I installed mine last year and my energy bills dropped significantly.",
+      },
+      {
+        user: { name: "Emma Wilson" },
+        comment: "I'm considering this too. Would love to hear more about your experience!",
+      },
     ],
-    createdAt: new Date('2024-03-15').toISOString()
+    createdAt: new Date("2024-03-15").toISOString(),
   },
   {
-    _id: '2',
-    userName: 'David Earth',
-    message: 'Started my home composting project today! 🌱 Here\'s a tip: Mix green materials (like food scraps) with brown materials (like dried leaves) for the best results.',
-    likes: Array(23).fill({ _id: 'dummy' }),
+    _id: "2",
+    userName: "David Earth",
+    message:
+      "Started my home composting project today! 🌱 Here's a tip: Mix green materials (like food scraps) with brown materials (like dried leaves) for the best results.",
+    likes: Array(23).fill({ _id: "dummy" }),
     comments: [
-      { user: { name: 'Lisa Chen' }, comment: 'Great tip! I\'ve been composting for months and it\'s made my garden so much healthier.' }
+      {
+        user: { name: "Lisa Chen" },
+        comment: "Great tip! I've been composting for months and it's made my garden so much healthier.",
+      },
     ],
-    createdAt: new Date('2024-03-14').toISOString()
+    createdAt: new Date("2024-03-14").toISOString(),
   },
   {
-    _id: '3',
-    userName: 'Alex Rivers',
-    message: 'Just switched to a bamboo toothbrush and reusable cotton pads. Small changes add up! What small eco-friendly swaps have you made recently?',
-    likes: Array(42).fill({ _id: 'dummy' }),
+    _id: "3",
+    userName: "Alex Rivers",
+    message:
+      "Just switched to a bamboo toothbrush and reusable cotton pads. Small changes add up! What small eco-friendly swaps have you made recently?",
+    likes: Array(42).fill({ _id: "dummy" }),
     comments: [
-      { user: { name: 'Tom Baker' }, comment: 'I switched to shampoo bars - no more plastic bottles!' },
-      { user: { name: 'Maria Garcia' }, comment: 'Reusable water bottle and coffee cup - haven\'t used disposables in months!' },
-      { user: { name: 'Chris Park' }, comment: 'Beeswax wraps instead of plastic wrap - works great!' }
+      { user: { name: "Tom Baker" }, comment: "I switched to shampoo bars - no more plastic bottles!" },
+      {
+        user: { name: "Maria Garcia" },
+        comment: "Reusable water bottle and coffee cup - haven't used disposables in months!",
+      },
+      { user: { name: "Chris Park" }, comment: "Beeswax wraps instead of plastic wrap - works great!" },
     ],
-    createdAt: new Date('2024-03-13').toISOString()
+    createdAt: new Date("2024-03-13").toISOString(),
   },
   {
-    _id: '4',
-    userName: 'Maya Waters',
-    message: '🌿 Weekly Challenge: Try going meat-free for just one day this week! Share your favorite vegetarian recipes below.',
-    likes: Array(31).fill({ _id: 'dummy' }),
+    _id: "4",
+    userName: "Maya Waters",
+    message:
+      "🌿 Weekly Challenge: Try going meat-free for just one day this week! Share your favorite vegetarian recipes below.",
+    likes: Array(31).fill({ _id: "dummy" }),
     comments: [
-      { user: { name: 'James Cook' }, comment: 'Lentil curry is my go-to meat-free meal!' },
-      { user: { name: 'Sophie Lee' }, comment: 'Mushroom risotto - even my meat-loving family enjoys it!' }
+      { user: { name: "James Cook" }, comment: "Lentil curry is my go-to meat-free meal!" },
+      { user: { name: "Sophie Lee" }, comment: "Mushroom risotto - even my meat-loving family enjoys it!" },
     ],
-    createdAt: new Date('2024-03-12').toISOString()
-  }
+    createdAt: new Date("2024-03-12").toISOString(),
+  },
 ];
 
 const CommunityHub = () => {
@@ -62,7 +81,27 @@ const CommunityHub = () => {
   const navigate = useNavigate();
   const [editingPost, setEditingPost] = useState(null);
   const [editingComment, setEditingComment] = useState(null);
-  const currentUserId = localStorage.getItem('userId'); // Make sure to store userId during login
+  // const currentUserId = localStorage.getItem("userId"); // Make sure to store userId during login
+  const { token } = useAuthContext();
+
+  const [currentUserId, setCurrentUserId] = useState(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: user } = await axios.get(`${backendURL}/user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(user);
+      setCurrentUserId(user._id);
+    };
+    getUser();
+  }, []);
+
+  if (!token) {
+    return <Navigate to={"/auth"} />;
+  }
 
   // Refs for animations
   const postsContainerRef = useRef(null);
@@ -75,12 +114,12 @@ const CommunityHub = () => {
     requestAnimationFrame(() => {
       const ctx = gsap.context(() => {
         const tl = gsap.timeline({
-          defaults: { duration: 0.5, ease: 'power2.out' }
+          defaults: { duration: 0.5, ease: "power2.out" },
         });
 
         // Set initial states
         gsap.set(titleRef.current, { opacity: 0, y: -50 });
-        gsap.set('.post-card', { opacity: 0, y: 100 });
+        gsap.set(".post-card", { opacity: 0, y: 100 });
         gsap.set(fabButtonRef.current, { scale: 0, rotation: -180 });
 
         // Animate title
@@ -88,23 +127,31 @@ const CommunityHub = () => {
           opacity: 1,
           y: 0,
           duration: 0.8,
-          ease: 'back.out(1.7)'
+          ease: "back.out(1.7)",
         });
 
         // Animate posts
-        tl.to('.post-card', {
-          opacity: 1,
-          y: 0,
-          stagger: 0.1,
-        }, '-=0.4');
+        tl.to(
+          ".post-card",
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.1,
+          },
+          "-=0.4"
+        );
 
         // Animate FAB button
-        tl.to(fabButtonRef.current, {
-          scale: 1,
-          rotation: 0,
-          duration: 0.5,
-          ease: 'back.out(1.7)'
-        }, '-=0.2');
+        tl.to(
+          fabButtonRef.current,
+          {
+            scale: 1,
+            rotation: 0,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+          },
+          "-=0.2"
+        );
       });
 
       return () => ctx.revert(); // Cleanup
@@ -122,7 +169,7 @@ const CommunityHub = () => {
           opacity: 1,
           y: 0,
           duration: 0.3,
-          ease: 'power2.out'
+          ease: "power2.out",
         });
       });
 
@@ -135,21 +182,21 @@ const CommunityHub = () => {
     gsap.to(element, {
       scale: 1.5,
       duration: 0.15,
-      ease: 'power2.out',
+      ease: "power2.out",
       yoyo: true,
-      repeat: 1
+      repeat: 1,
     });
   };
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/v1/posts');
+      const response = await fetch("http://localhost:3000/api/v1/posts");
       const data = await response.json();
       if (data.posts && data.posts.length > 0) {
         setPosts(data.posts); // Only update if we get real posts
       }
     } catch (err) {
-      console.log('Using dummy posts for now');
+      console.log("Using dummy posts for now");
       // Don't set error - we're showing dummy posts
     } finally {
       setIsLoading(false);
@@ -159,200 +206,190 @@ const CommunityHub = () => {
   const handlePostSubmit = async () => {
     if (newPost.trim() === "") return;
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/posts', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3000/api/v1/posts", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ content: newPost })
+        body: JSON.stringify({ content: newPost }),
       });
 
-      if (!response.ok) throw new Error('Failed to create post');
+      if (!response.ok) throw new Error("Failed to create post");
 
       const data = await response.json();
-      
+
       // Update posts with the new post
-      setPosts(prevPosts => [data.post, ...prevPosts]);
+      setPosts((prevPosts) => [data.post, ...prevPosts]);
       setNewPost("");
       setShowPostForm(false);
 
       // Animate the new post
-      gsap.from('.post-card:first-child', {
+      gsap.from(".post-card:first-child", {
         y: -50,
         opacity: 0,
         duration: 0.5,
-        ease: 'back.out(1.7)'
+        ease: "back.out(1.7)",
       });
     } catch (err) {
-      setError('Failed to create post');
+      setError("Failed to create post");
     }
   };
 
   const handleLike = async (postId) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     try {
       const response = await fetch(`http://localhost:3000/api/v1/posts/${postId}/like`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      if (!response.ok) throw new Error('Failed to like post');
-      
+      if (!response.ok) throw new Error("Failed to like post");
+
       fetchPosts();
     } catch (err) {
-      setError('Failed to like post');
+      setError("Failed to like post");
     }
   };
 
   const handleAddComment = async (postId, comment) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     try {
       const response = await fetch(`http://localhost:3000/api/v1/posts/${postId}/comments`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ content: comment })
+        body: JSON.stringify({ content: comment }),
       });
 
-      if (!response.ok) throw new Error('Failed to add comment');
-      
+      if (!response.ok) throw new Error("Failed to add comment");
+
       const data = await response.json();
       // Update posts with the new comment
-      setPosts(prevPosts => 
-        prevPosts.map(post => 
-          post._id === postId ? data.post : post
-        )
-      );
+      setPosts((prevPosts) => prevPosts.map((post) => (post._id === postId ? data.post : post)));
     } catch (err) {
-      setError('Failed to add comment');
+      setError("Failed to add comment");
     }
   };
 
   const handleDeletePost = async (postId) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     try {
       const response = await fetch(`http://localhost:3000/api/v1/posts/${postId}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      if (!response.ok) throw new Error('Failed to delete post');
-      setPosts(prevPosts => prevPosts.filter(post => post._id !== postId));
+      if (!response.ok) throw new Error("Failed to delete post");
+      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
     } catch (err) {
-      setError('Failed to delete post');
+      setError("Failed to delete post");
     }
   };
 
   const handleUpdatePost = async (postId, content) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     try {
       const response = await fetch(`http://localhost:3000/api/v1/posts/${postId}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ content })
+        body: JSON.stringify({ content }),
       });
 
-      if (!response.ok) throw new Error('Failed to update post');
-      
+      if (!response.ok) throw new Error("Failed to update post");
+
       const data = await response.json();
-      setPosts(prevPosts => 
-        prevPosts.map(post => post._id === postId ? data.post : post)
-      );
+      setPosts((prevPosts) => prevPosts.map((post) => (post._id === postId ? data.post : post)));
       setEditingPost(null);
     } catch (err) {
-      setError('Failed to update post');
+      setError("Failed to update post");
     }
   };
 
   const handleUpdateComment = async (postId, commentId, content) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     try {
       const response = await fetch(`http://localhost:3000/api/v1/posts/${postId}/comments/${commentId}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ content })
+        body: JSON.stringify({ content }),
       });
 
-      if (!response.ok) throw new Error('Failed to update comment');
-      
+      if (!response.ok) throw new Error("Failed to update comment");
+
       const data = await response.json();
-      setPosts(prevPosts => 
-        prevPosts.map(post => post._id === postId ? data.post : post)
-      );
+      setPosts((prevPosts) => prevPosts.map((post) => (post._id === postId ? data.post : post)));
       setEditingComment(null);
     } catch (err) {
-      setError('Failed to update comment');
+      setError("Failed to update comment");
     }
   };
 
   const handleDeleteComment = async (postId, commentId) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     try {
       const response = await fetch(`http://localhost:3000/api/v1/posts/${postId}/comments/${commentId}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      if (!response.ok) throw new Error('Failed to delete comment');
-      
+      if (!response.ok) throw new Error("Failed to delete comment");
+
       const data = await response.json();
-      setPosts(prevPosts => 
-        prevPosts.map(post => post._id === postId ? data.post : post)
-      );
+      setPosts((prevPosts) => prevPosts.map((post) => (post._id === postId ? data.post : post)));
     } catch (err) {
-      setError('Failed to delete comment');
+      setError("Failed to delete comment");
     }
   };
 
@@ -363,43 +400,48 @@ const CommunityHub = () => {
     <div className="bg-gray-100 min-h-screen p-4 pb-24 relative overflow-hidden flex justify-center">
       {/* Left Color Panel */}
       <div className="absolute left-0 top-0 w-1/4 h-full bg-green-200 z-0"></div>
-      
+
       {/* Right Color Panel */}
       <div className="absolute right-0 top-0 w-1/4 h-full bg-blue-200 z-0"></div>
 
-      <div className="relative z-10 w-full max-w-2xl"> {/* Reduced width of the post container */}
+      <div className="relative z-10 w-full max-w-2xl">
+        {" "}
+        {/* Reduced width of the post container */}
         <h1 ref={titleRef} className="text-3xl font-bold mb-4 relative text-center">
           Community Hub
-          <div className="absolute -z-10 w-20 h-20 bg-green-200 rounded-full opacity-50 blur-lg"
-               style={{ top: '-50%', left: '-10%' }}></div>
+          <div
+            className="absolute -z-10 w-20 h-20 bg-green-200 rounded-full opacity-50 blur-lg"
+            style={{ top: "-50%", left: "-10%" }}
+          ></div>
         </h1>
-
         {/* Posts List */}
         <div ref={postsContainerRef} className="space-y-4">
           {posts.map((post) => {
             const isOwnPost = post.user._id === currentUserId;
-            const hasLikedPost = post.likes.some(like => like.userId === currentUserId); // Check if the current user has liked the post
-            
+            const hasLikedPost = post.likes.some((like) => like.userId === currentUserId); // Check if the current user has liked the post
+
             return (
-              <div key={post._id} 
-                   className={`post-card bg-white p-5 m-5 rounded-lg shadow-md transform transition-all hover:scale-[1.01] hover:shadow-lg
-                              ${isOwnPost ? 'border-l-4 border-green-500 bg-green-50' : ''}`}>
-                <div className={`flex items-center ${isOwnPost ? 'justify-between' : 'mb-2'}`}>
+              <div
+                key={post._id}
+                className={`post-card bg-white p-5 m-5 rounded-lg shadow-md transform transition-all hover:scale-[1.01] hover:shadow-lg
+                              ${isOwnPost ? "border-l-4 border-green-500 bg-green-50" : ""}`}
+              >
+                <div className={`flex items-center ${isOwnPost ? "justify-between" : "mb-2"}`}>
                   <div className="flex items-center">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold
-                                    ${isOwnPost ? 'bg-green-600' : 'bg-green-500'}`}>
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold
+                                    ${isOwnPost ? "bg-green-600" : "bg-green-500"}`}
+                    >
                       {post.user?.name?.[0]?.toUpperCase()}
                     </div>
                     <div className="ml-3">
-                      <h3 className={`font-semibold ${isOwnPost ? 'text-green-800' : ''}`}>
-                        {isOwnPost ? 'You' : post.user?.name}
+                      <h3 className={`font-semibold ${isOwnPost ? "text-green-800" : ""}`}>
+                        {isOwnPost ? "You" : post.user?.name}
                       </h3>
-                      <p className="text-xs text-gray-500">
-                        {new Date(post.createdAt).toLocaleString()}
-                      </p>
+                      <p className="text-xs text-gray-500">{new Date(post.createdAt).toLocaleString()}</p>
                     </div>
                   </div>
-                  
+
                   {isOwnPost && (
                     <div className="flex space-x-2">
                       <button
@@ -422,7 +464,7 @@ const CommunityHub = () => {
                   <div className="mt-4 mb-4">
                     <textarea
                       value={editingPost.content}
-                      onChange={(e) => setEditingPost({...editingPost, content: e.target.value})}
+                      onChange={(e) => setEditingPost({ ...editingPost, content: e.target.value })}
                       className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                       rows={4}
                     />
@@ -442,10 +484,8 @@ const CommunityHub = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className={`${isOwnPost ? 'mt-4 bg-white p-4 rounded-lg' : 'mt-2'}`}>
-                    <p className={`${isOwnPost ? 'text-gray-800' : 'text-gray-700'}`}>
-                      {post.content}
-                    </p>
+                  <div className={`${isOwnPost ? "mt-4 bg-white p-4 rounded-lg" : "mt-2"}`}>
+                    <p className={`${isOwnPost ? "text-gray-800" : "text-gray-700"}`}>{post.content}</p>
                   </div>
                 )}
 
@@ -472,7 +512,9 @@ const CommunityHub = () => {
                           handleLike(post._id);
                           animateLike(e.currentTarget);
                         }}
-                        className={`flex items-center space-x-1 transition-colors duration-300 ${hasLikedPost ? 'text-blue-500' : 'text-gray-600 hover:text-blue-500'}`}
+                        className={`flex items-center space-x-1 transition-colors duration-300 ${
+                          hasLikedPost ? "text-blue-500" : "text-gray-600 hover:text-blue-500"
+                        }`}
                       >
                         <BiLike size={18} />
                         <span>{post.likes?.length || 0}</span>
@@ -487,16 +529,20 @@ const CommunityHub = () => {
                     <div className="space-y-2 mt-4">
                       {post.comments?.map((comment) => {
                         const isOwnComment = comment.user._id === currentUserId;
-                        
+
                         return (
-                          <div key={comment._id} 
-                               className={`bg-gray-100 p-2 rounded-lg shadow-sm ${isOwnComment ? 'border-l-4 border-green-500' : ''}`}>
+                          <div
+                            key={comment._id}
+                            className={`bg-gray-100 p-2 rounded-lg shadow-sm ${
+                              isOwnComment ? "border-l-4 border-green-500" : ""
+                            }`}
+                          >
                             {editingComment?._id === comment._id ? (
                               <div>
                                 <input
                                   type="text"
                                   value={editingComment.content}
-                                  onChange={(e) => setEditingComment({...editingComment, content: e.target.value})}
+                                  onChange={(e) => setEditingComment({ ...editingComment, content: e.target.value })}
                                   className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                 />
                                 <div className="flex justify-end space-x-2 mt-2">
@@ -517,7 +563,7 @@ const CommunityHub = () => {
                             ) : (
                               <div className="flex justify-between items-start">
                                 <p className="text-sm text-gray-800">
-                                  <span className="font-semibold">{isOwnComment ? 'You' : comment.user.name}: </span>
+                                  <span className="font-semibold">{isOwnComment ? "You" : comment.user.name}: </span>
                                   {comment.content}
                                 </p>
                                 {isOwnComment && (
@@ -541,7 +587,7 @@ const CommunityHub = () => {
                           </div>
                         );
                       })}
-                      
+
                       {/* Comment input - Only show if not the post owner */}
                       <div className="flex mt-3">
                         <input
@@ -569,7 +615,7 @@ const CommunityHub = () => {
       <button
         ref={fabButtonRef}
         onClick={() => {
-          const token = localStorage.getItem('token');
+          const token = localStorage.getItem("token");
           if (token) {
             setShowPostForm(true);
           }

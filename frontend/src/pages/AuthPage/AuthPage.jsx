@@ -1,25 +1,25 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { 
-  FaUser, FaLock, FaEnvelope, 
-  FaUserPlus, FaKey, FaSignInAlt
-} from 'react-icons/fa';
+import React, { useState, useEffect, useRef } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { FaUser, FaLock, FaEnvelope, FaUserPlus, FaKey, FaSignInAlt } from "react-icons/fa";
+import axios from "axios";
+import { backendURL } from "../../../URL";
+import { useAuthContext } from "../../contexts/authContext";
 
 const AuthPage = () => {
   const [searchParams] = useSearchParams();
   const [isLogin, setIsLogin] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   // Set initial form state based on URL parameter
   useEffect(() => {
-    const mode = searchParams.get('mode');
-    setIsLogin(mode !== 'signup');
+    const mode = searchParams.get("mode");
+    setIsLogin(mode !== "signup");
   }, [searchParams]);
 
   const toggleAuth = () => {
     setIsLogin(!isLogin);
-    setError('');
+    setError("");
   };
 
   return (
@@ -41,28 +41,32 @@ const AuthPage = () => {
         )}
 
         {/* Left Panel - Login */}
-        <div className={`w-1/2 transition-transform duration-700 ease-in-out absolute 
-          ${isLogin ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div
+          className={`w-1/2 transition-transform duration-700 ease-in-out absolute 
+          ${isLogin ? "translate-x-0" : "-translate-x-full"}`}
+        >
           <LoginForm setError={setError} navigate={navigate} />
         </div>
 
         {/* Right Panel - Signup */}
-        <div className={`w-1/2 transition-transform duration-700 ease-in-out absolute right-0
-          ${!isLogin ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div
+          className={`w-1/2 transition-transform duration-700 ease-in-out absolute right-0
+          ${!isLogin ? "translate-x-0" : "translate-x-full"}`}
+        >
           <SignUpForm setError={setError} navigate={navigate} />
         </div>
 
         {/* Left Panel - Sign Up (hidden when logged in) */}
-        <div className={`w-1/2 transition-transform duration-700 ease-in-out absolute 
-          ${!isLogin ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div
+          className={`w-1/2 transition-transform duration-700 ease-in-out absolute 
+          ${!isLogin ? "translate-x-0" : "-translate-x-full"}`}
+        >
           <div className="h-full flex flex-col items-center justify-center space-y-8 p-8 bg-gradient-to-br from-green-500 to-green-600 text-white">
             <div className="relative">
               <h2 className="text-3xl font-bold">Hello, Friend!</h2>
               <div className="absolute -top-6 -right-6 w-12 h-12 bg-green-400 rounded-full opacity-50 blur-lg"></div>
             </div>
-            <p className="text-center text-green-50">
-              Enter your personal details and start your journey with us
-            </p>
+            <p className="text-center text-green-50">Enter your personal details and start your journey with us</p>
             <button
               onClick={toggleAuth}
               className="px-8 py-3 rounded-full border-2 border-white text-white
@@ -74,16 +78,16 @@ const AuthPage = () => {
         </div>
 
         {/* Right Panel - Login (hidden when signed up) */}
-        <div className={`w-1/2 transition-transform duration-700 ease-in-out absolute right-0
-          ${isLogin ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div
+          className={`w-1/2 transition-transform duration-700 ease-in-out absolute right-0
+          ${isLogin ? "translate-x-0" : "translate-x-full"}`}
+        >
           <div className="h-full flex flex-col items-center justify-center space-y-8 p-8 bg-gradient-to-br from-green-500 to-green-600 text-white">
             <div className="relative">
               <h2 className="text-3xl font-bold">Welcome Back!</h2>
               <div className="absolute -top-6 -left-6 w-12 h-12 bg-green-400 rounded-full opacity-50 blur-lg"></div>
             </div>
-            <p className="text-center text-green-50">
-              To keep connected with us please login with your personal info
-            </p>
+            <p className="text-center text-green-50">To keep connected with us please login with your personal info</p>
             <button
               onClick={toggleAuth}
               className="px-8 py-3 rounded-full border-2 border-white text-white
@@ -99,38 +103,36 @@ const AuthPage = () => {
 };
 
 const LoginForm = ({ setError, navigate }) => {
+  const { token, setToken, name, setName } = useAuthContext();
+
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/v1/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(formData),
-      });
+      // const response = await fetch("http://localhost:3000/api/v1/auth/login", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   credentials: "include",
+      //   body: JSON.stringify(formData),
+      // });
 
-      const data = await response.json();
-      
-      if (response.ok) {
-        localStorage.setItem('token', data.token);
-        if (data.user) {
-          localStorage.setItem('user', JSON.stringify(data.user));
-        }
-        navigate('/');
-        window.location.reload();
-      } else {
-        setError(data.msg || 'Login failed');
-      }
+      const { data } = await axios.post(`${backendURL}/auth/login`, formData);
+      console.log(data.token);
+      localStorage.setItem("token", data.token);
+      setToken(data.token);
+      setName(data?.user?.name);
+      localStorage.setItem("username", data?.user?.name);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      navigate("/dashboard");
     } catch (err) {
-      console.error('Login error:', err);
-      setError('An error occurred during login');
+      console.error("Login error:", err);
+      setError("An error occurred during login");
     }
   };
 
@@ -174,49 +176,43 @@ const LoginForm = ({ setError, navigate }) => {
 };
 
 const SignUpForm = ({ setError, navigate }) => {
+  const { token, setToken, setName } = useAuthContext();
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
     try {
       const { confirmPassword, ...signupData } = formData;
-      
-      const response = await fetch('http://localhost:3000/api/v1/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(signupData),
-      });
 
-      const data = await response.json();
-      console.log('Registration response:', data); // Add this for debugging
-      
-      if (response.ok) {
-        localStorage.setItem('token', data.token);
-        if (data.user) {
-          localStorage.setItem('user', JSON.stringify(data.user));
-        }
-        navigate('/');
-      } else {
-        const errorMessage = data.msg || data.message || data.error || 'Signup failed';
-        setError(errorMessage);
-        console.error('Signup error response:', data);
-      }
+      // const response = await fetch("http://localhost:3000/api/v1/auth/register", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   credentials: "include",
+      //   body: JSON.stringify(signupData),
+      // });
+
+      const { data } = await axios.post(`${backendURL}/auth/register`, formData);
+      console.log("Registration response:", data);
+      setToken(data.token);
+      setName(data?.user?.name);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      navigate("/");
     } catch (err) {
-      console.error('Signup error:', err);
-      setError('An error occurred during signup. Please try again.');
+      console.error("Signup error:", err);
+      setError("An error occurred during signup. Please try again.");
     }
   };
 
