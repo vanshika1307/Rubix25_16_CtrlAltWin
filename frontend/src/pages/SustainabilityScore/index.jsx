@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 export const SustainabilityScore = () => {
   const [products, setProducts] = useState("");
+  const [loading, setLoading] = useState(false);
   const { token } = useAuthContext();
 
   const handleInputChange = (e) => {
@@ -13,6 +14,7 @@ export const SustainabilityScore = () => {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     if (products.trim() == "") {
       return window.alert("Please enter elements");
     }
@@ -20,7 +22,7 @@ export const SustainabilityScore = () => {
     console.log(productsArray);
     try {
       const { data } = await axios.post(
-        `${backendURL}/scores`,
+        `${backendURL}/user`,
         { products: products.split(", ") },
         {
           headers: {
@@ -36,6 +38,8 @@ export const SustainabilityScore = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,8 +62,9 @@ export const SustainabilityScore = () => {
         <button
           onClick={handleSubmit}
           className="w-full mt-4 px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-200 ease-in-out"
+          disabled={loading}
         >
-          Submit
+          {loading ? "Loading.." : "Submit"}
         </button>
       </div>
     </div>

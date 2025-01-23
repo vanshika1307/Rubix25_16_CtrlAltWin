@@ -10,7 +10,8 @@ import { useRef } from "react";
 gsap.registerPlugin(ScrollTrigger);
 
 export const Features = () => {
-  const ref = useRef();
+  const ref = useRef(),
+    btnRef = useRef();
   useGSAP(() => {
     gsap.from(".features-heading", {
       y: 50,
@@ -25,7 +26,7 @@ export const Features = () => {
     gsap.from("#card-1", {
       x: -200,
       y: 60,
-      delay: 0.3,
+      delay: 0.5,
       opacity: 0,
       scrollTrigger: {
         trigger: ref.current,
@@ -37,7 +38,7 @@ export const Features = () => {
       x: 200,
       y: 60,
       opacity: 0,
-      delay: 0.3,
+      delay: 0.5,
       scrollTrigger: {
         trigger: ref.current,
         // markers: true,
@@ -47,9 +48,21 @@ export const Features = () => {
     gsap.from("#card-2", {
       y: 80,
       opacity: 0,
-      delay: 0.3,
+      delay: 0.5,
       scrollTrigger: {
         trigger: ref.current,
+        // markers: true,
+        start: "top 80%",
+      },
+    });
+
+    gsap.from(".feature-btn", {
+      scale: 0,
+      opacity: 0,
+      y: 100,
+      delay: 0.5,
+      scrollTrigger: {
+        trigger: btnRef.current,
         // markers: true,
         start: "top 80%",
       },
@@ -81,23 +94,25 @@ export const Features = () => {
   ];
   return (
     <div id="features-bg" className="h-screen flex flex-col justify-center overflow-x-hidden">
-      <h2 className="features-heading font-bold text-4xl text-center mb-10" ref={ref}>
+      <h2 className="features-heading font-bold text-5xl text-center mb-12 font-title" ref={ref}>
         First steps at protecting mother nature...
       </h2>
       <div className="feature-cards flex gap-8 px-6">
         {data.map(({ name, description, icon, url }, idx) => {
           return (
             <div
-              className="bg-white px-5 py-10 flex flex-col gap-3 justify-center items-center shadow-lg"
+              className="bg-white px-5 py-10 flex flex-col gap-3 justify-center items-center shadow-lg rounded-2xl"
               key={idx}
               id={`card-${idx + 1}`}
             >
               <div className="feature-icon text-4xl">{icon}</div>
               <div className="feature-name font-bold text-xl">{name}</div>
-              <div className="feature-desc text-gray-500 font-semibold tracking-wider">{description}</div>
+              <div className="feature-desc text-gray-500 font-semibold tracking-wider" ref={btnRef}>
+                {description}
+              </div>
               <Link
                 to={url}
-                className="bg-green-400 px-5 py-1 font-bold text-white mt-3 rounded-md inline-flex items-center gap-2 shadow-md"
+                className="feature-btn bg-green-400 px-5 py-1 font-bold text-white mt-3 rounded-md inline-flex items-center gap-2 shadow-md"
               >
                 Try it <FaLocationArrow />
               </Link>

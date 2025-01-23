@@ -13,6 +13,7 @@ const susRouter = require("./routes/sustain-score");
 const userRouter = require("./routes/user");
 const postsRouter = require("./routes/posts");
 const mapRouter = require("./routes/map");
+const productRoutes = require("./routes/product")
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
@@ -53,6 +54,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/posts", postsRouter);
+app.use("/api/products", productRoutes);
 app.use(susRouter);
 app.use(mapRouter);
 

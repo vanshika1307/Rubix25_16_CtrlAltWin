@@ -26,7 +26,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     // Check for user data in localStorage
-    const userData = localStorage.getItem('user');
+    const userData = localStorage.getItem("user");
     if (userData) {
       setUser(JSON.parse(userData));
     }
@@ -34,12 +34,12 @@ export const Navbar = () => {
 
   const handleLogout = () => {
     // Clear user data from localStorage
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
     // Refresh the page
     window.location.reload();
-    navigate('/');
+    navigate("/");
   };
 
   useGSAP(() => {
@@ -56,16 +56,16 @@ export const Navbar = () => {
 
   return (
     <Wrapper className="absolute w-full top-0">
-      <nav className="bg-white/30 mt-5 mx-5 px-4 text-white font-bold text-lg rounded-2xl backdrop-blur-sm">
+      <nav className="bg-white/30 fixed w-full py-1 px-4 z-10 font-bold text-lg backdrop-blur-sm">
         <div className="nav-center mx-auto max-w-[1190px]">
           <div className="nav-links flex gap-3 items-center">
             <NavLink to={`/`}>Home</NavLink>
-            <NavLink to={`/`}>About</NavLink>
+            <NavLink to={`/score`}>Scores</NavLink>
             <NavLink to={`/`}>Contacts</NavLink>
           </div>
           <div className="nav-logo flex justify-center items-center text-4xl text-green-900">
             <img src={logo} alt="" className="" />
-            <span className="pl-1 font-serif">Essence</span>
+            <span className="pl-1 font-title">Essence</span>
           </div>
           <div className="nav-action flex justify-end gap-3 my-auto">
             {user ? (
@@ -74,7 +74,7 @@ export const Navbar = () => {
                   <FaUserCircle className="text-2xl" />
                   <span className="text-green-900">{user.name}</span>
                 </div>
-                <button 
+                <button
                   onClick={handleLogout}
                   className="bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors"
                 >
