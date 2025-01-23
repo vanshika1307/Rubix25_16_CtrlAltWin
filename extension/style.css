@@ -2,6 +2,7 @@ body {
     font-family: Arial, sans-serif;
     width: 400px;
     padding: 10px;
+
   }
   
   h1 {
@@ -16,7 +17,7 @@ body {
   }
   
   button {
-    background-color: #007BFF;
+    background-color: green;
     color: white;
     padding: 5px 10px;
     border: none;
@@ -24,5 +25,5 @@ body {
   }
   
   button:hover {
-    background-color: #0056b3;
+    background-color: darkgreen;
   }  
