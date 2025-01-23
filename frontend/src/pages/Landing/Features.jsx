@@ -1,5 +1,5 @@
 import { LuScanBarcode } from "react-icons/lu";
-import { RiExchangeFundsLine } from "react-icons/ri";
+import { RiExchangeFundsLine, RiMapPin2Line } from "react-icons/ri";
 import { FaAward } from "react-icons/fa";
 import { FaLocationArrow } from "react-icons/fa6";
 import { Link } from "react-router-dom";
@@ -78,10 +78,10 @@ export const Features = () => {
       url: "/",
     },
     {
-      name: "Greener Alternatives",
+      name: "Sustainable Stores Near You",
       description:
-        "Not quite right? No problem! Discover eco-friendly alternatives that match your needs without compromising on quality.",
-      icon: <RiExchangeFundsLine />,
+        "Find eco-conscious stores in your area! Support sustainable businesses that align with your values and contribute to a greener future.",
+      icon: <RiMapPin2Line />,
       url: "/",
     },
     {
