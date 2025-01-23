@@ -8,6 +8,7 @@ import AuthPage from "./pages/AuthPage/AuthPage";
 import CommunityHub from "./pages/CommunityHub";
 import { AuthContextProvider } from "./contexts/authContext";
 import { Dashboard } from "./Dashboard";
+import LocalStores from "./pages/LocalStores/LocalStores";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
     ],
+  },
+  {
+    path: "map",
+    element: <LocalStores />,
   },
 ]);
 

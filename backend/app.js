@@ -12,6 +12,7 @@ const jobsRouter = require("./routes/jobs");
 const susRouter = require("./routes/sustain-score");
 const userRouter = require("./routes/user");
 const postsRouter = require("./routes/posts");
+const mapRouter = require("./routes/map");
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
@@ -46,6 +47,7 @@ app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/posts", postsRouter);
 app.use(susRouter);
+app.use(mapRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
