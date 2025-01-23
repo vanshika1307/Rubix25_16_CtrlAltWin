@@ -35,10 +35,7 @@ const cors = require("cors");
 // );
 app.use(express.json());
 app.use(helmet());
-app.use(cors({
-  origin: 'http://localhost:5173', // Your frontend URL
-  credentials: true,
-}));
+app.use(cors());
 app.use(xss());
 
 // routes
