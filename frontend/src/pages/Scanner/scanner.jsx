@@ -44,7 +44,7 @@ const Scanner = () => {
       }
 
       const data = await response.json();
-      setProductDetails(data.details);
+      setProductDetails(data.details?.replaceAll("**", ""));
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred while processing the barcode.");

@@ -3,9 +3,10 @@ import Styled from "styled-components";
 import logo from "../assets/images/logo.png";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useState, useEffect } from "react";
-import { FaUserCircle } from "react-icons/fa";
 import { useAuthContext } from "../contexts/authContext";
+import { useState, useEffect } from "react";
+import { SiGooglegemini } from "react-icons/si";
+import { FaUserCircle } from "react-icons/fa";
 
 const Wrapper = Styled.div`
   .nav-links a {
@@ -59,7 +60,7 @@ export const Navbar = () => {
   return (
     <Wrapper className="absolute w-full top-0">
       <nav className="bg-white/30 fixed w-full py-1 px-4 z-10 font-bold text-lg backdrop-blur-sm">
-        <div className="nav-center mx-auto max-w-[1190px]">
+        <div className="nav-center mx-auto max-w-[2200px]">
           <div className="nav-links flex gap-3 items-center">
             <NavLink to={`/`}>Home</NavLink>
             <NavLink to={`/score`}>Score</NavLink>
@@ -71,9 +72,15 @@ export const Navbar = () => {
             <span className="pl-1 font-title">Essence</span>
           </div>
           <div className="nav-action flex justify-end gap-3 my-auto">
+            <Link
+              to={"/suggestions"}
+              className="flex items-center justify-center gap-1 text-lg bg-violet-500/40 px-3 rounded-lg shadow-lg mx-2"
+            >
+              <span className="">AI Suggestions</span> <SiGooglegemini className="text-xl" />
+            </Link>
             {token ? (
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 cursor-pointer">
+                <div className="nav-links flex items-center gap-2 cursor-pointer">
                   <Link to={"/dashboard"}>
                     <span className="text-green-900 capitalize">{name}</span>
                   </Link>
