@@ -33,7 +33,7 @@ export const Intro = () => {
 
   return (
     <div className="grid grid-cols-2  h-full p-5 overflow-x-hidden font-serif bg-green-100">
-      <div className="my-auto ">
+      <div className="my-auto pl-10">
         <h2 className="intro-heading text-4xl font-bold">Our Mission </h2>
         <p className="para-1 my-3 text-lg leading-5 tracking-wide text-gray-800 " ref={ref}>
           Our mission is rooted in sustainability and conscious living. Small, thoughtful choices can create big changes

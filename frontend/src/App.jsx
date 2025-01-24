@@ -13,6 +13,7 @@ import Scanner from "./pages/Scanner/scanner";
 import ProductsPage from "./pages/ProductDisplay/Home";
 import SearchPage from "./pages/ProductDisplay/SearchPage";
 import { Suggestions } from "./pages/Suggestions";
+import AboutUs from "./pages/AboutUs/AboutUs";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "/suggestions",
         element: <Suggestions />,
+      },
+      {
+        path: "/about",
+        element: <AboutUs />,
       },
     ],
   },

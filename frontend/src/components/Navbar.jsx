@@ -37,7 +37,7 @@ export const Navbar = () => {
   }, []);
 
   useGSAP(() => {
-    gsap.from(".nav-action button, .nav-links a", {
+    gsap.from(".nav-action a, .nav-links a", {
       y: -100,
       stagger: 0.2,
     });
@@ -61,11 +61,12 @@ export const Navbar = () => {
     <Wrapper className="absolute w-full top-0">
       <nav className="bg-white/30 fixed w-full py-1 px-4 z-10 font-bold text-lg backdrop-blur-sm">
         <div className="nav-center mx-auto max-w-[2200px]">
-          <div className="nav-links flex gap-3 items-center">
+          <div className="nav-links flex gap-4 items-center">
             <NavLink to={`/`}>Home</NavLink>
             <NavLink to={`/score`}>Score</NavLink>
             <NavLink to={`/products`}>Products</NavLink>
             <NavLink to={`/community`}>Community</NavLink>
+            <NavLink to={`/about`}>About Us</NavLink>
           </div>
           <div className="nav-logo flex justify-center items-center text-4xl text-green-900">
             <img src={logo} alt="" className="" />
