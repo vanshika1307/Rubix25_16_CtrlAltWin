@@ -80,10 +80,10 @@ export const Navbar = () => {
               <span className="">AI Suggestions</span> <SiGooglegemini className="text-xl" />
             </Link>
             {token ? (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 px-3">
                 <div className="nav-links flex items-center gap-2 cursor-pointer">
                   <Link to={"/dashboard"}>
-                    <span className="text-green-900 capitalize">{name}</span>
+                    <span className="text-green-900 capitalize">{name ? `Hi, ${name}` : ""}</span>
                   </Link>
                 </div>
                 <button

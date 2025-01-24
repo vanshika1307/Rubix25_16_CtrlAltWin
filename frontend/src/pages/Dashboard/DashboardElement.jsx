@@ -79,7 +79,9 @@ export const DashboardElement = ({ user }) => {
             <span>Email : </span> {user?.email}
           </div>
         </div>
-        <div className="score mx-auto">{userScore}</div>
+        <div className="score mx-auto font-style font-bold bg-green-400 p-3 rounded-full border-2 border-green-800">
+          {userScore}
+        </div>
       </div>
       <div className="badges flex items-center justify-between gap-5 bg-white/50 backdrop-blur-md max-w-[600px] mx-auto p-5 my-5 rounded-md shadow-lg">
         {badges.map(({ url, unlockScore }, idx) => {

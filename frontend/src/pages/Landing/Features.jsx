@@ -60,7 +60,7 @@ export const Features = () => {
       scale: 0,
       opacity: 0,
       y: 100,
-      delay: 0.5,
+      delay: 0.8,
       scrollTrigger: {
         trigger: btnRef.current,
         // markers: true,
@@ -89,7 +89,7 @@ export const Features = () => {
       description:
         "Let us do the heavy lifting! Our browser extension scans your cart and rates each item based on sustainability, so you can shop smarter.",
       icon: <FaAward />,
-      url: "/",
+      url: "https://github.com/MeetB7/EssenceExtension",
     },
   ];
   return (
@@ -113,12 +113,22 @@ export const Features = () => {
               <div className="feature-desc text-gray-500 font-semibold tracking-wider" ref={btnRef}>
                 {description}
               </div>
-              <Link
-                to={url}
-                className="feature-btn bg-green-400 px-5 py-1 font-bold text-white mt-3 rounded-md inline-flex items-center gap-2 shadow-md"
-              >
-                Try it <FaLocationArrow />
-              </Link>
+              {url[0] == "h" ? (
+                <a
+                  href={url}
+                  target="_blank"
+                  className="feature-btn bg-green-400 px-5 py-1 font-bold text-white mt-3 rounded-md inline-flex items-center gap-2 shadow-md"
+                >
+                  Try it <FaLocationArrow />
+                </a>
+              ) : (
+                <Link
+                  to={url}
+                  className="feature-btn bg-green-400 px-5 py-1 font-bold text-white mt-3 rounded-md inline-flex items-center gap-2 shadow-md"
+                >
+                  Try it <FaLocationArrow />
+                </Link>
+              )}
             </div>
           );
         })}

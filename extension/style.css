@@ -1,29 +1,118 @@
+/* General styling */
 body {
-    font-family: Arial, sans-serif;
-    width: 400px;
-    padding: 10px;
+  font-family: "Arial", sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  width: 400px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-  }
-  
-  h1 {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  
-  #product-list {
-    max-height: 200px;
-    overflow-y: auto;
-    margin-bottom: 10px;
-  }
-  
-  button {
-    background-color: green;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: darkgreen;
-  }  
+/* Header styling */
+.popup-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+h1 {
+  font-size: 18px;
+  margin: 0;
+  color: #008000;
+}
+
+/* Button styling */
+.analyze-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #008000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px;
+}
+
+.analyze-btn:hover {
+  background-color: #355e3b;
+}
+
+/* Results styling */
+.results-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.results-list li {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #555;
+}
+
+.results-list li:last-child {
+  border-bottom: none;
+}
+
+/* Highlight scores */
+.results-list li .score {
+  font-weight: bold;
+  color: #008000; /* Green for positive scores */
+}
+
+.results-list li .score.bad {
+  color: #e63946; /* Red for negative scores */
+}
+
+/* Style the results list */
+#results {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Style each list item */
+#results li {
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Style for the button */
+#analyze-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Change button color on hover */
+#analyze-btn:hover {
+  background-color: #0056b3;
+}
