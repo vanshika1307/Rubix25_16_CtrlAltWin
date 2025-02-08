@@ -9,7 +9,7 @@ export const HomeLayout = () => {
     const fakeDataFetch = () => {
       setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 5500);
     };
     fakeDataFetch();
   }, []);
